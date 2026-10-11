@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Cannabis Education Interactive Guide -->
+<!-- Built for Adolescent Health Block -->
+<!-- Last updated: 2024 -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cannabis Education Guide - Interactive</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
+            color: #0b0b0b; 
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .guide { 
+            width: 100%; 
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .hero { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            padding: 3rem 2rem; 
+            text-align: center; 
+            color: white; 
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .hero h1 { 
+            font-size: 32px; 
+            font-weight: 700; 
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+            animation: slideDown 0.6s ease;
+        }
+        .hero p { 
+            font-size: 16px; 
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+            animation: slideDown 0.8s ease;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .progress-bar {
+            height: 6px;
+            background: #e0e0e0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        .section { 
+            padding: 2.5rem 2rem; 
+            border-bottom: 1px solid #e0e0e0;
+            scroll-margin-top: 50px;
+        }
+        .section:last-child { 
+            border-bottom: none; 
+        }
+        .section-title { 
+            font-size: 24px; 
+            font-weight: 600; 
+            margin-bottom: 1.5rem; 
+            display: flex; 
+            align-items: center; 
+            gap: 12px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .section-title:hover {
+            opacity: 0.8;
+        }
+        .icon { 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .brain { background: #e8f1ff; }
+        .risks { background: #ffe8e8; }
+        .stats { background: #e8ffe8; }
+        .policy { background: #fff8e8; }
+        .prevent { background: #f0e8ff; }
+        .support { background: #e8fff5; }
+        .content { 
+            font-size: 16px; 
+            line-height: 1.8; 
+        }
+        .content h3 { 
+            font-size: 18px; 
+            font-weight: 600; 
+            margin-top: 1.5rem; 
+            margin-bottom: 0.8rem; 
+            color: #0b0b0b; 
+        }
+        .content h3:first-of-type { 
+            margin-top: 0; 
+        }
+        .stat-box { 
+            background: linear-gradient(135deg, #f5f7ff 0%, #fff5f8 100%);
+            border-radius: 12px; 
+            padding: 1.5rem; 
+            margin: 1.5rem 0; 
+            border-left: 5px solid;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .stat-box:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+        .stat-box.brain-stat { border-left-color: #667eea; }
+        .stat-box.risk-stat { border-left-color: #e74c3c; }
+        .stat-box.support-stat { border-left-color: #27ae60; }
+        .stat-number { 
+            font-size: 28px; 
+            font-weight: 700; 
+            color: #0b0b0b;
+            animation: slideInNumber 0.6s ease;
+        }
+        @keyframes slideInNumber {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .stat-label { 
+            font-size: 14px; 
+            color: #666; 
+            margin-top: 0.5rem; 
+        }
+        .key-point { 
+            display: flex; 
+            gap: 12px; 
+            margin: 1.2rem 0;
+            padding: 0.8rem;
+            background: #f9f9f9;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+        .key-point:hover {
+            background: #f0f0f0;
+        }
+        .key-point-bullet { 
+            flex-shrink: 0; 
+            width: 28px; 
+            height: 28px; 
+            border-radius: 50%; 
+            background: #378add; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: white; 
+            font-weight: 600; 
+            font-size: 13px;
+        }
+        .key-point-text { 
+            flex: 1; 
+        }
+        .highlight { 
+            background: linear-gradient(135deg, #fff9e6 0%, #fffbf0 100%);
+            padding: 1.2rem; 
+            border-radius: 8px; 
+            margin: 1.5rem 0; 
+            border-left: 4px solid #ffc107;
+            position: relative;
+        }
+        .highlight::before {
+            content: '💡';
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            font-size: 24px;
+            opacity: 0.3;
+        }
+        .quiz-container {
+            background: #f5f7ff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border: 2px solid #e0e8ff;
+        }
+        .quiz-question {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 1rem;
+            color: #0b0b0b;
+        }
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .quiz-option {
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            background: white;
+            transition: all 0.3s;
+            font-size: 15px;
+        }
+        .quiz-option:hover {
+            border-color: #667eea;
+            background: #f9fbff;
+        }
+        .quiz-option.selected {
+            border-color: #667eea;
+            background: #e8f1ff;
+            font-weight: 600;
+        }
+        .quiz-option.correct {
+            border-color: #27ae60;
+            background: #e8ffe8;
+            color: #0b6b0b;
+        }
+        .quiz-option.incorrect {
+            border-color: #e74c3c;
+            background: #ffe8e8;
+            color: #6b0b0b;
+        }
+        .quiz-feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            animation: slideDown 0.3s ease;
+        }
+        .quiz-feedback.correct {
+            background: #e8ffe8;
+            color: #0b6b0b;
+            border: 1px solid #27ae60;
+        }
+        .quiz-feedback.incorrect {
+            background: #ffe8e8;
+            color: #6b0b0b;
+            border: 1px solid #e74c3c;
+        }
+        .myth-fact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .myth-fact-card {
+            padding: 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 2px solid transparent;
+        }
+        .myth-card {
+            background: #ffe8e8;
+            border-color: #e74c3c;
+        }
+        .myth-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(231, 76, 60, 0.2);
+        }
+        .fact-card {
+            background: #e8ffe8;
+            border-color: #27ae60;
+        }
+        .fact-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(39, 174, 96, 0.2);
+        }
+        .myth-fact-label {
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            opacity: 0.7;
+        }
+        .myth-fact-text {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .myth-card .myth-fact-label { color: #6b0b0b; }
+        .fact-card .myth-fact-label { color: #0b6b0b; }
+        .scenario-box {
+            background: #f0e8ff;
+            border-left: 4px solid #6a2c8a;
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        .scenario-title {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 0.8rem;
+            color: #6a2c8a;
+        }
+        .scenario-text {
+            font-size: 15px;
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+        .scenario-choices {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .scenario-btn {
+            padding: 1rem;
+            border: 2px solid #d4b5e8;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .scenario-btn:hover {
+            background: #f9f6ff;
+            border-color: #6a2c8a;
+        }
+        .scenario-result {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            animation: slideDown 0.3s ease;
+        }
+        .result-good {
+            background: #e8ffe8;
+            border-left: 4px solid #27ae60;
+            color: #0b6b0b;
+        }
+        .result-caution {
+            background: #fff9e6;
+            border-left: 4px solid #ffc107;
+            color: #663c00;
+        }
+        .expandable-header {
+            background: #f9f9f9;
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            transition: all 0.3s;
+            margin: 1rem 0;
+        }
+        .expandable-header:hover {
+            background: #f0f0f0;
+        }
+        .expandable-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .expandable-content.open {
+            max-height: 1000px;
+        }
+        .expandable-text {
+            padding: 1rem;
+            background: #fafafa;
+            border-radius: 0 0 8px 8px;
+        }
+        .toggle-arrow {
+            transition: transform 0.3s;
+            font-size: 18px;
+        }
+        .toggle-arrow.open {
+            transform: rotate(180deg);
+        }
+        .disclaimer { 
+            background: #f9f9f9; 
+            padding: 1.5rem; 
+            border-radius: 8px; 
+            margin-top: 1.5rem; 
+            font-size: 14px; 
+            color: #666; 
+            border-left: 4px solid #ddd;
+        }
+        .tab-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            padding: 0.8rem 1.2rem;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .tab-btn:hover {
+            border-color: #667eea;
+        }
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        .hidden { display: none; }
+        @media (max-width: 768px) {
+            .myth-fact-container {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 {
+                font-size: 24px;
+            }
+            .section {
+                padding: 1.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="progress-bar">
+    <div class="progress-fill" id="progressFill"></div>
+</div>
+
+<div class="guide">
+  <div class="hero">
+    <h1>🔥 What You Need to Know About Weed</h1>
+    <p>Facts that matter to your health (and your future)</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">
+      <div class="icon brain">🧠</div>
+      Your Brain is Still Under Construction
+    </div>
+    <div class="content">
+      <p>Your brain doesn't fully develop until your mid-20s. The parts that handle decision-making, impulse control, and long-term planning are some of the last to finish.</p>
+      
+      <div class="stat-box brain-stat">
+        <div class="stat-number">Ages 12–25</div>
+        <div class="stat-label">Critical development period for brain maturity</div>
+      </div>
+
+      <h3>How THC affects a developing brain:</h3>
+      <div class="key-point">
+        <div class="key-point-bullet">1</div>
+        <div class="key-point-text"><strong>Memory & learning:</strong> Regular use during these years can affect how your brain stores and retrieves information</div>
+      </div>
+      <div class="key-point">
+        <div class="key-point-bullet">2</div>
+        <div class="key-point-text"><strong>Motivation:</strong> Heavy use, especially starting early, may reduce drive and interest in activities</div>
+      </div>
+      <div class="key-point">
+        <div class="key-point-bullet">3</div>
+        <div class="key-point-text"><strong>Decision-making:</strong> The judgment part of your brain is literally not done cooking yet—THC can interfere with that process</div>
+      </div>
+
+      <div class="highlight">
+        <strong>Real talk:</strong> These changes *can* be reversible if use stops, but the younger you start and the more you use, the greater the risk of lasting effects.
+      </div>
+
+      <div class="quiz-container">
+        <div class="quiz-question">❓ Quick Check: When does your brain finish developing?</div>
+        <div class="quiz-options" id="quiz1">
+          <div class="quiz-option" onclick="checkAnswer(this, false)">Around age 15</div>
+          <div class="quiz-option" onclick="checkAnswer(this, true)">Mid-20s</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">Age 21 (legal age)</div>
+          <div class="quiz-option" onclick="checkAnswer(this, false)">Around age 18</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">
+      <div class="icon risks">⚠️</div>
+      Real Health Risks
+    </div>
+    <div class="content">
+      <h3>Myth vs. Fact</h3>
+      <div class="myth-fact-container">
+        <div class="myth-fact-card myth-card" onclick="toggleCard(this)">
+          <div class="myth-fact-label">❌ Myth</div>
+          <div class="myth-fact-text">"Weed is totally harmless and natural"</div>
+        </div>
+        <div class="myth-fact-card fact-card" onclick="toggleCard(this)">
+          <div class="myth-fact-label">✅ Fact</div>
+          <div class="myth-fact-text">"Just because something is natural doesn't mean it's safe, especially for developing brains"</div>
+        </div>
+      </div>
+
+      <h3>Short-term effects (hours to days):</h3>
+      <div class="key-point">
+        <div class="key-point-bullet">•</div>
+        <div class="key-point-text">Impaired judgment—driving, decision-making, reaction time all affected</div>
+      </div>
+      <div class="key-point">
+        <div class="key-point-bullet">•</div>
+        <div class="key-point-text">Anxiety, panic, or paranoia (especially with high-potency products)</div>
+      </div>
+      <div class="key-point">
+        <div class="key-point-bullet">•</div>
+        <div class="key-point-text">Cannabis hyperemesis syndrome (CHS)—severe nausea and vomiting</div>
+      </div>
+      <div class="key-point">
+        <div class="key-point-bullet">•</div>
+        <div class="key-point-text">Impaired coordination and balance</div>
+      </div>
+
+      <h3>Long-term effects (regular use):</h3>
+      <div class="expandable-header" onclick="toggleExpandable(this)">
+        <span>📊 Click to see long-term risks</span>
+        <span class="toggle-arrow">▼</span>
+      </div>
+      <div class="expandable-content">
+        <div class="expandable-text">
+          <div class="key-point">
+            <div class="key-point-bullet">•</div>
+            <div class="key-point-text"><strong>Dependency:</strong> ~1 in 6 teens who use weed regularly develop cannabis use disorder</div>
+          </div>
+          <div class="key-point">
+            <div class="key-point-bullet">•</div>
+            <div class="key-point-text"><strong>Lung health:</strong> Smoking damages airways; vaping may have long-term risks we're still learning about</div>
+          </div>
+          <div class="key-point">
+            <div class="key-point-bullet">•</div>
+            <div class="key-point-text"><strong>Mental health:</strong> Increased risk of depression, anxiety, and psychosis (especially if you have a family history)</div>
+          </div>
+          <div class="key-point">
+            <div class="key-point-bullet">•</div>
+            <div class="key-point-text"><strong>Sleep:</strong> Regular use can mess with sleep quality, even if you think it helps you sleep</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-box risk-stat">
+        <div class="stat-number">17%</div>
+        <div class="stat-label">Addiction risk if you start before 18 (vs. 9% for adults)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">
+      <div class="icon prevent">🎭</div>
+      Real Scenarios: What Would You Do?
+    </div>
+    <div class="content">
+      <div class="scenario-box">
+        <div class="scenario-title">Scenario 1: Friend Pressure</div>
+        <div class="scenario-text">It's Friday night. Your friend group is planning to hang out, and you know some are bringing weed. Your friends say "Come on, it's just weed, everyone's doing it."</div>
+        <div class="scenario-choices">
+          <button class="scenario-btn" onclick="showScenarioResult(this, 'good')">Say "No thanks, I'm good" and stick to it</button>
+          <button class="scenario-btn" onclick="showScenarioResult(this, 'good')">Tell them you're not interested and suggest something else</button>
+          <button class="scenario-btn" onclick="showScenarioResult(this, 'caution')">Go anyway and just watch (but temptation is real)</button>
+          <button class="scenario-btn" onclick="showScenarioResult(this, 'warning')">Give in to peer pressure</button>
+        </div>
+      </div>
+
+      <div class="scenario-box">
+        <div class="scenario-title">Scenario 2: Driving Safety</div>
+        <div class="scenario-text">You're at a party and a friend who's been smoking asks if you want a ride home.</div>
+        <div class="scenario-choices">
+          <button class="scenario-btn" onclick="showScenarioResult(this, 'good')">Politely decline and call an Uber/Lyft or ask a sober friend</button>
+          <button class="scenario-btn" onclick="showScenarioResult(this, 'good')">Tell an adult about the situation</button>
+          <button class="scenario-btn" onclick="showScenarioResult(this, 'warning')">Accept the ride thinking it's no big deal</button>
+          <button class="scenario-btn" onclick="showScenarioResult(this, 'caution')">Decide you'll "just be careful"</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">
+      <div class="icon stats">📊</div>
+      The Numbers
+    </div>
+    <div class="content">
+      <div class="stat-box" style="border-left-color: #27ae60;">
+        <div class="stat-number">36%</div>
+        <div class="stat-label">Of high school seniors have used marijuana</div>
+      </div>
+      <div class="stat-box" style="border-left-color: #27ae60;">
+        <div class="stat-number">3–4x</div>
+        <div class="stat-label">Stronger than weed from the 90s</div>
+      </div>
+      <div class="stat-box" style="border-left-color: #27ae60;">
+        <div class="stat-number">2x higher</div>
+        <div class="stat-label">Addiction risk for teens vs. adults</div>
+      </div>
+
+      <h3>💡 What's changed?</h3>
+      <div class="key-point">
+        <div class="key-point-bullet">🔬</div>
+        <div class="key-point-text"><strong>Potency explosion:</strong> Modern products have way more THC. That joint from the 90s isn't the same as today's vape pen or edible.</div>
+      </div>
+      <div class="key-point">
+        <div class="key-point-bullet">🍪</div>
+        <div class="key-point-text"><strong>Edibles:</strong> Easier to overdose on (delayed onset = you take more before feeling it), hard to control dose, longer-lasting effects.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">
+      <div class="icon policy">⚖️</div>
+      Legal Reality
+    </div>
+    <div class="content">
+      <h3>Here's the deal:</h3>
+      <div class="tab-buttons">
+        <button class="tab-btn active" onclick="switchTab(event, 'federal')">Federal Law</button>
+        <button class="tab-btn" onclick="switchTab(event, 'minor')">If You're a Minor</button>
+        <button class="tab-btn" onclick="switchTab(event, 'driving')">Driving & DUI</button>
+      </div>
+
+      <div id="federal" class="tab-content">
+        <p>Marijuana is still a <strong>Schedule I controlled substance</strong> at the federal level, even though some states have legalized it. That means it's not going away legally anytime soon.</p>
+      </div>
+
+      <div id="minor" class="tab-content hidden">
+        <div class="key-point">
+          <div class="key-point-bullet">•</div>
+          <div class="key-point-text">Illegal everywhere in the US, regardless of state law</div>
+        </div>
+        <div class="key-point">
+          <div class="key-point-bullet">•</div>
+          <div class="key-point-text">Penalties vary by state (misdemeanor charges, fines, juvenile record)</div>
+        </div>
+        <div class="key-point">
+          <div class="key-point-bullet">•</div>
+          <div class="key-point-text">A record can affect college, jobs, housing, and scholarships</div>
+        </div>
+        <div class="highlight">
+          A criminal record is permanent and can derail plans you haven't even made yet.
+        </div>
+      </div>
+
+      <div id="driving" class="tab-content hidden">
+        <div class="key-point">
+          <div class="key-point-bullet">🚗</div>
+          <div class="key-point-text">Driving under the influence is illegal everywhere, even in legal states</div>
+        </div>
+        <div class="key-point">
+          <div class="key-point-bullet">💀</div>
+          <div class="key-point-text">Impaired driving kills. THC slows reaction time and messes with judgment</div>
+        </div>
+        <div class="key-point">
+          <div class="key-point-bullet">🚨</div>
+          <div class="key-point-text">DUI charges can result in license suspension, fines, court, and insurance nightmares</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">
+      <div class="icon prevent">💪</div>
+      Why Waiting (or Not Starting) Is Actually the Smart Move
+    </div>
+    <div class="content">
+      <h3>The science-backed reason: your brain</h3>
+      <p>Every year you delay is a year your brain develops more fully. Waiting genuinely reduces your risk of lasting brain effects.</p>
+
+      <h3>Other reasons that matter:</h3>
+      <div class="key-point">
+        <div class="key-point-bullet">✓</div>
+        <div class="key-point-text">You keep your focus on school, sports, activities, and friends</div>
+      </div>
+      <div class="key-point">
+        <div class="key-point-bullet">✓</div>
+        <div class="key-point-text">You avoid legal trouble and a permanent record</div>
+      </div>
+      <div class="key-point">
+        <div class="key-point-bullet">✓</div>
+        <div class="key-point-text">You save money (seriously, it adds up)</div>
+      </div>
+      <div class="key-point">
+        <div class="key-point-bullet">✓</div>
+        <div class="key-point-text">You stay in control—not letting peer pressure decide for you</div>
+      </div>
+      <div class="key-point">
+        <div class="key-point-bullet">✓</div>
+        <div class="key-point-text">You get to know yourself better before experimenting</div>
+      </div>
+
+      <h3>If you're already using:</h3>
+      <div class="highlight">
+        Stopping or cutting back now can still protect your developing brain. It's not too late to make a different choice. No judgment.
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">
+      <div class="icon support">🤝</div>
+      If You Need Help (No Shame)
+    </div>
+    <div class="content">
+      <h3>Cannabis use disorder is real, treatable, and asking for help is strength.</h3>
+
+      <div class="stat-box support-stat">
+        <div class="stat-number">1-800-662-4357</div>
+        <div class="stat-label">SAMHSA National Helpline (free, confidential, 24/7)</div>
+      </div>
+
+      <h3>🚩 Signs it might be time to talk to someone:</h3>
+      <div class="key-point">
+        <div class="key-point-bullet">•</div>
+        <div class="key-point-text">You're using more than you planned to</div>
+      </div>
+      <div class="key-point">
+        <div class="key-point-bullet">•</div>
+        <div class="key-point-text">You've tried to cut back but can't</div>
+      </div>
+      <div class="key-point">
+        <div class="key-point-bullet">•</div>
+        <div class="key-point-text">It's affecting school, sports, friendships, or family</div>
+      </div>
+      <div class="key-point">
+        <div class="key-point-bullet">•</div>
+        <div class="key-point-text">You're anxious or paranoid when you use, but you keep using anyway</div>
+      </div>
+      <div class="key-point">
+        <div class="key-point-bullet">•</div>
+        <div class="key-point-text">You feel dependent on it to relax or have fun</div>
+      </div>
+
+      <h3>Who to talk to:</h3>
+      <p><strong>A parent, school counselor, doctor, or therapist</strong> can help without judgment. They've heard this before and know how to help.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="disclaimer">
+      <strong>📌 This is educational information, not medical advice.</strong> Talk to your doctor or healthcare provider about your individual situation. If you have questions about cannabis and your health, they're the right person to ask.
+    </div>
+  </div>
+</div>
+
+<script>
+  function updateProgress() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollPercent = (scrollTop / docHeight) * 100;
+    document.getElementById('progressFill').style.width = scrollPercent + '%';
+  }
+  window.addEventListener('scroll', updateProgress);
+
+  function checkAnswer(element, isCorrect) {
+    const container = element.parentElement;
+    const options = container.querySelectorAll('.quiz-option');
+    
+    options.forEach(opt => {
+      if (opt === element) {
+        opt.classList.add('selected');
+      }
+      opt.onclick = null;
+      opt.style.cursor = 'default';
+    });
+
+    setTimeout(() => {
+      let feedback = document.createElement('div');
+      feedback.className = 'quiz-feedback ' + (isCorrect ? 'correct' : 'incorrect');
+      
+      if (isCorrect) {
+        feedback.innerHTML = '✅ Correct! Your brain keeps developing throughout your teens and into your mid-20s.';
+        element.classList.add('correct');
+      } else {
+        feedback.innerHTML = '❌ Not quite. Your brain doesn\'t finish developing until your mid-20s!';
+        element.classList.add('incorrect');
+      }
+      
+      container.appendChild(feedback);
+    }, 300);
+  }
+
+  function toggleCard(element) {
+    element.style.transform = element.style.transform === 'scale(1.05)' ? 'scale(1)' : 'scale(1.05)';
+  }
+
+  function toggleExpandable(header) {
+    const content = header.nextElementSibling;
+    const arrow = header.querySelector('.toggle-arrow');
+    
+    content.classList.toggle('open');
+    arrow.classList.toggle('open');
+  }
+
+  function switchTab(e, tabName) {
+    e.preventDefault();
+    
+    document.querySelectorAll('.tab-content').forEach(tab => {
+      tab.classList.add('hidden');
+    });
+    
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    
+    document.getElementById(tabName).classList.remove('hidden');
+    e.target.classList.add('active');
+  }
+
+  function showScenarioResult(button, type) {
+    const container = button.parentElement;
+    
+    const existing = container.querySelector('.scenario-result');
+    if (existing) existing.remove();
+    
+    let result = document.createElement('div');
+    result.className = 'scenario-result result-' + type;
+    
+    if (type === 'good') {
+      result.innerHTML = '✅ <strong>Great choice!</strong> You\'re protecting your health and staying safe. That takes real strength, especially with peer pressure.';
+    } else if (type === 'caution') {
+      result.innerHTML = '⚠️ <strong>Risky move.</strong> Even if you\'re "just watching," you\'re still in an environment where you might get pressured. Have an exit plan.';
+    } else {
+      result.innerHTML = '❌ <strong>Heads up:</strong> This puts your brain, health, and future at risk. Check the help section below if you want to talk to someone.';
+    }
+    
+    container.appendChild(result);
+  }
+</script>
+</body>
+</html>
